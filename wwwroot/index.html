@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html class="h-100">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Blazor Draggable Demo</title>
+    <base href="/" />
+    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link href="BlazorDraggableDemo.styles.css" rel="stylesheet" />
+</head>
+
+<body class="d-flex flex-column h-100">
+    <div class="flex-shrink-0 mb-5">
+        <div class="container">
+            <h1 class="mt-5">Blazor Webassembly SVG Drag And Drop</h1>
+            <p class="lead">
+                This is a demo of the implementation of drag and drop of SVG objects
+            </p>
+            <p>
+                <a href="https://github.com/AlexeyBoiko/BlazorDraggableDemo">GitHub</a>
+            </p>
+            <p class="mt-4">
+                Try to drag and drop titles and objects.
+                <br />The Moon moves around the Earth, so it drags at the same time as the Earth.
+                <br />The Earth moves around the Sun, so the Earth and the Moon drags at the same time as the Sun.
+            </p>
+            <div id="app">
+                <div class="text-center mt-2">
+                    <div class="spinner-border text-secondary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer mt-auto py-3 bg-light text-muted">
+        <div class="container">
+            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                <li class="nav-item"><a href="https://boyko.tech/" target="_blank" class="nav-link text-muted">boyko.tech</a></li>
+                <li class="nav-item"><a href="https://alexey-boyko.medium.com/" target="_blank" class="nav-link text-muted">Blog</a></li>
+                <li class="nav-item"><a href="https://github.com/AlexeyBoiko/" target="_blank" class="nav-link text-muted">GitHub</a></li>
+                <li class="nav-item"><a href="https://linkedin.com/in/alexey-boyko-tech" target="_blank" class="nav-link pe-0 text-muted">LinkedIn</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+﻿@inject IMouseService mouseSrv;
+ 
+<g transform="translate(@x, @y)" cursor=@cursor @onmousedown=OnDown 
+    @onmousedown:stopPropagation="true">
+    @ChildContent
+</g>
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+
+    double? x;
+    [Parameter]
+    public double X { 
+        get { return x ?? 0; }
+        set { if (!x.HasValue || (!isDown & XChanged.HasDelegate)) { x = value; } } 
+    }
+    [Parameter] public EventCallback<double> XChanged { get; set; }
+
+    double? y;
+    [Parameter]
+    public double Y {
+        get { return y ?? 0; }
+        set { if (!y.HasValue || (!isDown & YChanged.HasDelegate)) { y = value; } }
+    }
+    [Parameter] public EventCallback<double> YChanged { get; set; }
+
+
+    protected override void OnInitialized() {
+        mouseSrv.OnMove += OnMove;
+        mouseSrv.OnUp += OnUp;
+        base.OnInitialized();
+    }
+
+
+    string cursor = "grab";
+    bool _isDown;
+    bool isDown {
+        get { return _isDown; }
+        set {
+            _isDown = value;
+            cursor = _isDown ? "grabbing" : "grab";
+        }
+    }
+
+    double cursorX;
+    double cursorY;
+    void OnDown(MouseEventArgs e) {
+        isDown = true;
+        cursorX = e.ClientX;
+        cursorY = e.ClientY;
+    }
+
+    void OnUp(object? _, MouseEventArgs e) 
+        => isDown = false;
+
+    void OnMove(object? _, MouseEventArgs e) {
+        if (!isDown)
+            return;
+
+        x = x - (cursorX - e.ClientX);
+        y = y - (cursorY - e.ClientY);
+
+        cursorX = e.ClientX;
+        cursorY = e.ClientY;
+
+        XChanged.InvokeAsync(x.Value);
+        YChanged.InvokeAsync(y.Value);
+    }
+
+    public void Dispose() {
+        mouseSrv.OnMove -= OnMove;
+        mouseSrv.OnUp -= OnUp;
+    }
+}
