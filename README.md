@@ -3,6 +3,7 @@ Blazor Webassembly implementation of drag and drop of SVG objects
 
 [Interactive demo](https://alexeyboiko.github.io/BlazorDraggableDemo/ "Blazor Webassembly SVG Drag And Drop")
 
+![Blazor Webassembly SVG Drag And Drop demo](https://github.com/AlexeyBoiko/BlazorDraggableDemo/blob/gh-pages/Blazor-Webassembly-SVG-Drag-And-Drop.gif?raw=true)
 
 ## Example of use
 Without two way binding of X, Y parameters:
