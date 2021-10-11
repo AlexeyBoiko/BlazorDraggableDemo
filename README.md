@@ -1,11 +1,15 @@
 # Blazor Webassembly SVG Drag And Drop
-Blazor Webassembly implementation of drag and drop of SVG objects
+Blazor Webassembly implementation of
+- drag and drop of SVG objects
+- connecting lines of SVG objects
 
-[Interactive demo](https://alexeyboiko.github.io/BlazorDraggableDemo/ "Blazor Webassembly SVG Drag And Drop") | [Article](https://alexey-boyko.medium.com/blazor-webassembly-svg-drag-and-drop-e680769ac682)
+[Demo](https://alexeyboiko.github.io/BlazorDraggableDemo/ "Blazor Webassembly SVG Drag And Drop") | [Article](https://alexey-boyko.medium.com/blazor-webassembly-svg-drag-and-drop-e680769ac682)
+
+## Drag And Drop
 
 ![Blazor Webassembly SVG Drag And Drop demo](https://github.com/AlexeyBoiko/BlazorDraggableDemo/blob/gh-pages/Blazor-Webassembly-SVG-Drag-And-Drop.gif?raw=true)
 
-## Example of use
+### Example of use
 Without two way binding of X, Y parameters:
 ```cs
 @inject MouseService mouseSrv;
@@ -41,7 +45,7 @@ With two way binding:
 }
 ```
 
-## How to include Draggable in your project
+### How to include Draggable in your project
 1. Create MouseService
 ```cs
 // inject IMouseService into subscribers
@@ -68,83 +72,7 @@ builder.Services
 ```
 
 3. Create Draggable component
-```cs
-@inject IMouseService mouseSrv;
- 
-<g transform="translate(@x, @y)" cursor=@cursor @onmousedown=OnDown 
-    @onmousedown:stopPropagation="true">
-    @ChildContent
-</g>
-
-@code {
-    [Parameter] public RenderFragment? ChildContent { get; set; }
-
-
-    double? x;
-    [Parameter]
-    public double X { 
-        get { return x ?? 0; }
-        set { if (!x.HasValue || (!isDown & XChanged.HasDelegate)) { x = value; } } 
-    }
-    [Parameter] public EventCallback<double> XChanged { get; set; }
-
-    double? y;
-    [Parameter]
-    public double Y {
-        get { return y ?? 0; }
-        set { if (!y.HasValue || (!isDown & YChanged.HasDelegate)) { y = value; } }
-    }
-    [Parameter] public EventCallback<double> YChanged { get; set; }
-
-
-    protected override void OnInitialized() {
-        mouseSrv.OnMove += OnMove;
-        mouseSrv.OnUp += OnUp;
-        base.OnInitialized();
-    }
-
-
-    string cursor = "grab";
-    bool _isDown;
-    bool isDown {
-        get { return _isDown; }
-        set {
-            _isDown = value;
-            cursor = _isDown ? "grabbing" : "grab";
-        }
-    }
-
-    double cursorX;
-    double cursorY;
-    void OnDown(MouseEventArgs e) {
-        isDown = true;
-        cursorX = e.ClientX;
-        cursorY = e.ClientY;
-    }
-
-    void OnUp(object? _, MouseEventArgs e) 
-        => isDown = false;
-
-    void OnMove(object? _, MouseEventArgs e) {
-        if (!isDown)
-            return;
-
-        x = x - (cursorX - e.ClientX);
-        y = y - (cursorY - e.ClientY);
-
-        cursorX = e.ClientX;
-        cursorY = e.ClientY;
-
-        XChanged.InvokeAsync(x.Value);
-        YChanged.InvokeAsync(y.Value);
-    }
-
-    public void Dispose() {
-        mouseSrv.OnMove -= OnMove;
-        mouseSrv.OnUp -= OnUp;
-    }
-}
-```
+Copy and paste Draggable component code from source code.
 
 4. Subscribe on SVG events onmousemove and onmouseup, and fire MouseService events
 ```cs
@@ -156,3 +84,24 @@ builder.Services
     ...
 </svg>
 ```
+## Connecting Lines
+![Blazor Webassembly SVG Connectors demo](https://raw.githubusercontent.com/AlexeyBoiko/BlazorDraggableDemo/gh-pages/Blazor-Webassembly-SVG-Connectors.gif)
+
+### Example of use
+
+```cs
+<svg xmlns="http://www.w3.org/2000/svg">
+
+    <Connector 
+        X1=100 Y1=100 
+        Dir1=Direction.Right
+                
+        X2=300 Y2=250
+        Dir2=Direction.Left />
+
+</svg>
+
+```
+
+### How to include Connector in your project
+Just copy and past Connector component from source code.
