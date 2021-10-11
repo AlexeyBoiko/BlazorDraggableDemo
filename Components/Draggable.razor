@@ -28,7 +28,8 @@
 
     protected override void OnInitialized() {
         mouseSrv.OnMove += OnMove;
-        mouseSrv.OnUp += OnUp;
+        mouseSrv.OnUp += OnUpLeave;
+        mouseSrv.OnLeave += OnUpLeave;
         base.OnInitialized();
     }
 
@@ -51,7 +52,7 @@
         cursorY = e.ClientY;
     }
 
-    void OnUp(object? _, MouseEventArgs e) 
+    void OnUpLeave(object? _, MouseEventArgs e) 
         => isDown = false;
 
     void OnMove(object? _, MouseEventArgs e) {
@@ -70,6 +71,7 @@
 
     public void Dispose() {
         mouseSrv.OnMove -= OnMove;
-        mouseSrv.OnUp -= OnUp;
+        mouseSrv.OnUp -= OnUpLeave;
+        mouseSrv.OnLeave -= OnUpLeave;
     }
 }

@@ -1,0 +1,44 @@
+﻿@using static BlazorDraggableDemo.Components.Connector
+@inject MouseService mouseSrv;
+
+<div class="row mt-2">
+    <div class="col">
+        <svg class="bg-light" width="100%" height="500" xmlns="http://www.w3.org/2000/svg"
+            @onmousemove=@(e => mouseSrv.FireMove(this, e))
+            @onmouseup=@(e => mouseSrv.FireUp(this, e))
+            @onmouseleave=@(e => mouseSrv.FireLeave(this, e))>
+
+            @foreach(var plt in plants){
+
+                <Draggable @bind-X=plt.X @bind-Y=plt.Y>
+                    <circle r="@plt.R" fill="@plt.Fill" stroke="#fff" />
+                </Draggable>
+                <Connector X1=plt.RootX Y1=450 Dir1=Direction.Top X2=plt.X Y2=plt.ConnectY Dir2=plt.Dir />
+
+            }
+
+        </svg>
+    </div>
+</div>
+
+@code {
+    Plant[] plants = new[]{
+        new Plant { X =362, Y = 280, R= 35, RootX=400, Dir=Direction.Bottom, Fill="#1aaee5" },
+        new Plant { X =266, Y = 232, R= 15, RootX=370, Dir=Direction.Top, Fill="#04dcd2" },
+        new Plant { X =325, Y = 299, R= 35, RootX=390, Dir=Direction.Bottom, Fill="#1aaee5" },
+        new Plant { X =474, Y = 123, R= 15, RootX=375, Dir=Direction.Top, Fill="#04dcd2" },
+        new Plant { X =462, Y = 258, R= 35, RootX=400, Dir=Direction.Bottom, Fill="#1aaee5" },
+    };
+
+
+    class Plant {
+        public double X;
+        public double Y;
+        public double R;
+        public Direction Dir;
+        public double RootX;
+        public string Fill = "#333";
+
+        public double ConnectY => Dir == Direction.Top ? Y - R : Y + R;
+    };
+}

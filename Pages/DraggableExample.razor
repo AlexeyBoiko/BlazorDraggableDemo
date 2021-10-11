@@ -1,0 +1,68 @@
+﻿@inject MouseService mouseSrv;
+<div class="row g-3 align-items-center">
+    <div class="col-auto">
+        <label class="col-form-label">Solar system position:</label>
+    </div>
+    <div class="col-auto">
+        <input type="number" class="form-control" @bind=X />
+    </div>
+    <div class="col-auto">
+        <input type="number" @bind=Y class="form-control" />
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col">
+        <svg class="bg-light" width="100%" height="500" xmlns="http://www.w3.org/2000/svg"
+             @onmousemove=@(e => mouseSrv.FireMove(this, e))
+             @onmouseup=@(e => mouseSrv.FireUp(this, e))
+             @onmouseleave=@(e => mouseSrv.FireLeave(this, e))>
+
+            <style>
+                text {
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    fill: #333333;
+                }
+
+                .sun-title {
+                    fill: #fff;
+                    pointer-events: none !important;
+                }
+
+                .sun {
+                    fill: #ff6600;
+                    stroke: #fff;
+                    stroke-width: 1;
+                }
+            </style>
+
+            <Draggable @bind-X=X @bind-Y=Y>
+                <Sun />
+
+                <Draggable X=173 Y=-15>
+                    <circle r="35" fill="#1aaee5" stroke="#fff" />
+                    <Draggable X=-57 Y=-38>
+                        <text>Earth</text>
+                    </Draggable>
+
+                    <Draggable X=51 Y=-25>
+                        <circle r="15" fill="#04dcd2" stroke="#fff" />
+                        <Draggable X=-5 Y=-20>
+                            <text>Moon</text>
+                        </Draggable>
+                    </Draggable>
+                </Draggable>
+
+            </Draggable>
+
+        </svg>
+    </div>
+</div>
+
+@code {
+    double X = 290;
+    double Y = 250;
+}

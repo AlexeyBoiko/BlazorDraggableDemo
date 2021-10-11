@@ -1,0 +1,47 @@
+﻿<path d="M @X1 @Y1 C @c1x @c1y, @c2x @c2y, @X2 @Y2" stroke="rgb(108, 117, 125)" stroke-width="1.5" fill="transparent" style="pointer-events:none !important;" />
+
+@code {
+    [Parameter] public Direction Dir1 { get; set; } = Direction.Right;
+    [Parameter] public double X1 { get; set; }
+    [Parameter] public double Y1 { get; set; }
+
+    [Parameter] public Direction Dir2 { get; set; } = Direction.Left;
+    [Parameter] public double X2 { get; set; }
+    [Parameter] public double Y2 { get; set; }
+
+    double c1x;
+    double c1y;
+
+    double c2x;
+    double c2y;
+
+    protected override void OnParametersSet() {
+        c1x = cx(Dir1, X1);
+        c1y = cy(Dir1, Y1);
+
+        c2x = cx(Dir2, X2);
+        c2y = cy(Dir2, Y2);
+
+        base.OnParametersSet();
+    }
+
+    const int coef = 70;
+
+    static double cx(Direction dir, double x)
+        => (dir == Direction.Right || dir == Direction.Left)
+            ? dir == Direction.Right ? x + coef : x - coef
+            : x;
+
+    static double cy(Direction dir, double y)
+        => (dir == Direction.Right || dir == Direction.Left)
+            ? y
+            : dir == Direction.Bottom ? y + coef : y - coef;
+
+
+    public enum Direction {
+        Top,
+        Right,
+        Bottom,
+        Left
+    }
+}

@@ -1,19 +1,17 @@
+using BlazorDraggableDemo;
 using BlazorDraggableDemo.Services;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
-namespace BlazorDraggableDemo {
-	public class Program {
-		public static async Task Main(string[] args) {
-			var builder = WebAssemblyHostBuilder.CreateDefault(args);
-			builder.RootComponents.Add<App>("#app");
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
-			builder.Services
-				.AddSingleton<MouseService>()
-				.AddSingleton<IMouseService>(ff => ff.GetRequiredService<MouseService>());
+builder.Services.AddScoped(sp => 
+	new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-			await builder.Build().RunAsync();
-		}
-	}
-}
+builder.Services
+	.AddSingleton<MouseService>()
+	.AddSingleton<IMouseService>(ff => ff.GetRequiredService<MouseService>());
+
+await builder.Build().RunAsync();
